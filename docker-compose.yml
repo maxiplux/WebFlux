@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  #  web:
+  #    build: .
+  #    container_name: apipostgress
+  #    volumes:
+  #    - ./composeexample:/code
+  #    ports:
+  #    - "8080:8080"
+  #    links:
+  #    - postgres
+  #
+  #    depends_on:
+  #    - postgres
+
+
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
+volumes:
+  dbdata:
+# this compomse no has it https://thepracticaldeveloper.com/2017/12/11/dockerize-spring-boot/ , but  that exmaple is beautiful because implements scale

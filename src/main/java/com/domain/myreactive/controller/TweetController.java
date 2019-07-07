@@ -8,6 +8,7 @@ package com.domain.myreactive.controller;
 
 import com.domain.myreactive.model.Tweet;
 import com.domain.myreactive.repository.TweetRepository;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,11 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
+
+@CrossOrigin(value = {"http://localhost:3000/"},
+        allowedHeaders = {},
+        maxAge = 900
+)
 @RestController
 public class TweetController {
 
@@ -30,11 +36,14 @@ public class TweetController {
     }
 
     @PostMapping("/tweets")
+
     public Mono<Tweet> createTweets(@Valid @RequestBody Tweet tweet) {
         return tweetRepository.save(tweet);
     }
 
     @GetMapping("/tweets/{id}")
+    @ApiParam(name = "id", value = "All Params for the search request")
+
     public Mono<ResponseEntity<Tweet>> getTweetById(@PathVariable(value = "id") String tweetId) {
         return tweetRepository.findById(tweetId)
                 .map(savedTweet -> ResponseEntity.ok(savedTweet))
@@ -67,6 +76,7 @@ public class TweetController {
     // Tweets are Sent to the client as Server Sent Events
     @GetMapping(value = "/stream/tweets", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Tweet> streamAllTweets() {
+
         return tweetRepository.findAll();
     }
 }

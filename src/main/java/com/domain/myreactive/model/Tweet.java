@@ -5,14 +5,21 @@ package com.domain.myreactive.model;
  * Date: 09/09/2018
  * Time: 1:10
  */
+
+import lombok.Data;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Document(collection = "tweets")
+@Data
+@ToString
 public class Tweet {
     @Id
     private String id;
@@ -21,15 +28,18 @@ public class Tweet {
     @Size(max = 140)
     private String text;
 
-    @NotNull
-    private Date createdAt = new Date();
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updateAt;
 
     public Tweet() {
 
     }
 
     public Tweet(String text) {
-        this.id = id;
+
         this.text = text;
     }
 
@@ -49,11 +59,19 @@ public class Tweet {
         this.text = text;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }
