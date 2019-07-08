@@ -31,7 +31,8 @@ public class WebfluxDemoApplicationTests {
 
     @Test
     public void testCreateTweet() {
-        Tweet tweet = new Tweet("This is a Test Tweet");
+        Tweet tweet = new Tweet();
+        tweet.setText("This is a Test Tweet");
 
         webTestClient.post().uri("/tweets")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -57,7 +58,9 @@ public class WebfluxDemoApplicationTests {
 
     @Test
     public void testGetSingleTweet() {
-        Tweet tweet = tweetRepository.save(new Tweet("Hello, World!")).block();
+        Tweet tweet2 = new Tweet();
+        tweet2.setText("Hello, World!");
+        Tweet tweet = tweetRepository.save(tweet2).block();
 
         webTestClient.get()
                 .uri("/tweets/{id}", Collections.singletonMap("id", tweet.getId()))
@@ -70,9 +73,12 @@ public class WebfluxDemoApplicationTests {
 
     @Test
     public void testUpdateTweet() {
-        Tweet tweet = tweetRepository.save(new Tweet("Initial Tweet")).block();
+        Tweet tweet1 = new Tweet();
+        tweet1.setText("Initial Tweet");
+        Tweet tweet = tweetRepository.save(tweet1).block();
 
-        Tweet newTweetData = new Tweet("Updated Tweet");
+        Tweet newTweetData = new Tweet();
+        newTweetData.setText("Updated Tweet");
 
         webTestClient.put()
                 .uri("/tweets/{id}", Collections.singletonMap("id", tweet.getId()))
@@ -88,11 +94,15 @@ public class WebfluxDemoApplicationTests {
 
     @Test
     public void testDeleteTweet() {
-        Tweet tweet = tweetRepository.save(new Tweet("To be deleted")).block();
+        Tweet tweet1 = new Tweet();
+        tweet1.setText("To be deleted");
+        Tweet tweet = tweetRepository.save(tweet1).block();
 
         webTestClient.delete()
                 .uri("/tweets/{id}", Collections.singletonMap("id",  tweet.getId()))
                 .exchange()
                 .expectStatus().isOk();
+
+        //http://www.javawa.top/posts/75cc52fb/
     }
 }
